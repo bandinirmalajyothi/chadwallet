@@ -1,5 +1,7 @@
 # ChadWallet — Founding Engineer Screen
 
+🚀 **Live Demo: [chadwallet-yzny.vercel.app](https://chadwallet-yzny.vercel.app)**
+
 A fomo.family-style Solana trading app built with Next.js, Tailwind CSS, and real-time data.
 
 ## 🚀 Live Features
