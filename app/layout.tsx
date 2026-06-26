@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { PrivyProviderWrapper } from "@/components/providers/PrivyProvider";
+import { Analytics } from '@vercel/analytics/next';
 
 export const metadata: Metadata = {
   title: "ChadWallet — Trade Like a Chad",
@@ -29,6 +30,7 @@ export default function RootLayout({
         <PrivyProviderWrapper>
           {children}
         </PrivyProviderWrapper>
+        <Analytics />
       </body>
     </html>
   );
