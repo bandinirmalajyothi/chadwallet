@@ -1,84 +1,62 @@
 'use client';
 import { usePrivy } from '@privy-io/react-auth';
 import Link from 'next/link';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 
 export default function NavBar() {
   const { login, logout, authenticated, user, ready } = usePrivy();
-  const [menuOpen, setMenuOpen] = useState(false);
-  const router = useRouter();
-
-  const walletAddress = user?.wallet?.address;
-  const shortAddress = walletAddress ? `${walletAddress.slice(0,4)}...${walletAddress.slice(-4)}` : null;
+  const wallet = user?.wallet?.address;
+  const short = wallet ? `${wallet.slice(0,4)}...${wallet.slice(-4)}` : null;
 
   return (
     <nav style={{
-      position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-      padding: '0 24px',
-      height: '64px',
-      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-      background: 'rgba(7,6,15,0.85)',
-      backdropFilter: 'blur(20px)',
-      borderBottom: '1px solid var(--border)',
+      position:'fixed', top:0, left:0, right:0, zIndex:100,
+      height:60, padding:'0 28px',
+      display:'flex', alignItems:'center', justifyContent:'space-between',
+      background:'rgba(8,4,16,0.7)', backdropFilter:'blur(24px)',
+      borderBottom:'1px solid var(--border)',
     }}>
       {/* Logo */}
-      <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
+      <Link href="/" style={{ display:'flex', alignItems:'center', gap:9, textDecoration:'none' }}>
         <div style={{
-          width: 34, height: 34, borderRadius: '10px',
-          background: 'linear-gradient(135deg, #7c3aed, #10b981)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontWeight: 900, fontSize: 16, color: 'white',
+          width:32, height:32, borderRadius:9,
+          background:'linear-gradient(135deg,#7c3aed,#059669)',
+          display:'flex', alignItems:'center', justifyContent:'center',
+          fontWeight:900, fontSize:15, color:'white', letterSpacing:'-0.02em',
         }}>C</div>
-        <span style={{ fontSize: 18, fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--text-primary)' }}>
-          Chad<span style={{ color: 'var(--accent-purple-light)' }}>Wallet</span>
+        <span style={{ fontSize:17, fontWeight:800, letterSpacing:'-0.03em', color:'white' }}>
+          chad<span style={{color:'var(--accent-purple-light)'}}>wallet</span>
         </span>
       </Link>
 
-      {/* Center links */}
-      <div style={{ display: 'flex', gap: 32, alignItems: 'center' }} className="nav-links">
-        {[
-          { label: 'Trade', href: '/trade' },
-          { label: 'Trending', href: '/#trending' },
-          { label: 'Portfolio', href: '/portfolio' },
-        ].map(({ label, href }) => (
+      {/* Nav links */}
+      <div style={{ display:'flex', gap:28, alignItems:'center' }}>
+        {[['Trade','/trade'],['Trending','/#trending'],['Rewards','/rewards']].map(([label,href])=>(
           <Link key={label} href={href} style={{
-            color: 'var(--text-secondary)', textDecoration: 'none',
-            fontSize: 14, fontWeight: 500, transition: 'color 0.2s',
+            color:'var(--text-secondary)', textDecoration:'none',
+            fontSize:13, fontWeight:500, transition:'color 0.15s',
           }}
-          onMouseEnter={e => (e.currentTarget.style.color = 'var(--text-primary)')}
-          onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-secondary)')}
+          onMouseEnter={e=>(e.currentTarget.style.color='white')}
+          onMouseLeave={e=>(e.currentTarget.style.color='var(--text-secondary)')}
           >{label}</Link>
         ))}
       </div>
 
-      {/* Right actions */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-        {ready && (
-          authenticated ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              {shortAddress && (
-                <div style={{
-                  padding: '6px 12px', borderRadius: 8,
-                  background: 'var(--bg-card)', border: '1px solid var(--border)',
-                  fontSize: 13, fontWeight: 500, color: 'var(--accent-purple-light)',
-                  fontFamily: 'monospace',
-                }}>{shortAddress}</div>
-              )}
-              <button
-                onClick={() => logout()}
-                className="btn-outline"
-                style={{ padding: '8px 16px', borderRadius: 8, fontSize: 13, fontWeight: 600 }}
-              >Disconnect</button>
-            </div>
-          ) : (
-            <button
-              onClick={login}
-              className="btn-primary"
-              style={{ padding: '9px 20px', borderRadius: 10, fontSize: 14, fontWeight: 700 }}
-            >Connect Wallet</button>
-          )
-        )}
+      {/* Auth */}
+      <div style={{display:'flex',alignItems:'center',gap:10}}>
+        {ready && (authenticated ? (
+          <div style={{display:'flex',alignItems:'center',gap:8}}>
+            {short && <div style={{
+              padding:'5px 11px', borderRadius:8,
+              background:'rgba(139,92,246,0.12)', border:'1px solid rgba(139,92,246,0.25)',
+              fontSize:12, fontWeight:600, color:'var(--accent-purple-light)', fontFamily:'monospace',
+            }}>{short}</div>}
+            <button onClick={logout} className="btn-outline" style={{padding:'7px 16px',borderRadius:8,fontSize:12,fontWeight:600}}>Disconnect</button>
+          </div>
+        ) : (
+          <button onClick={login} className="btn-primary" style={{padding:'9px 20px',borderRadius:9,fontSize:13,fontWeight:700}}>
+            Connect Wallet
+          </button>
+        ))}
       </div>
     </nav>
   );
